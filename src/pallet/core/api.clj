@@ -88,15 +88,15 @@
   (fn [service-state environment phase target] (:target-type target :node)))
 
 (defmethod target-action-plan :node
-  [service-state environment phase node]
-  {:pre [node]}
+  [service-state environment phase target]
+  {:pre [target]}
   (fn [plan-state]
-    (logutils/with-context [:target (-> node :node primary-ip)]
-      (with-script-for-node (:node node)
+    (logutils/with-context [:target (-> target :node primary-ip)]
+      (with-script-for-node target
         ((action-plan
           service-state environment
-          (target-phase node phase) (phase-args phase)
-          {:server node})
+          (target-phase target phase) (phase-args phase)
+          {:server target})
          plan-state)))))
 
 (defmethod target-action-plan :group
@@ -175,7 +175,7 @@
    {:keys [action-plan phase target-type target] :as action-plan-map}]
   (tracef "execute-action-plan :node")
   (logutils/with-context [:target (-> target :node primary-ip)]
-    (with-script-for-node (:node target)
+    (with-script-for-node target
       (execute-action-plan*
        {:server target
         :service-state service-state
