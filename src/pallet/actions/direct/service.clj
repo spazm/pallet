@@ -1,5 +1,5 @@
 (ns pallet.actions.direct.service
-  "Service control."
+  "Service control. Deprecated in favour of pallet.crate.service."
   (:use
    clojure.tools.logging
    [pallet.action :only [implement-action]]
